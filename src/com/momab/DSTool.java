@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Properties;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -23,13 +24,26 @@ import com.momab.dstool.DSOperationBuilder;
 /**
  * @author Jonas Andreasson
  * 
- * This code is copyrighted under the MIT license. Please see LICENSE.TXT.
- *
+ *         This code is copyrighted under the MIT license. Please see
+ *         LICENSE.TXT.
+ * 
  */
 public class DSTool {
 
 	final static String TOOLNAME = "dstool";
 	final static String CMDLINE_SYNTAX = TOOLNAME + " appurl entitykind";
+
+	static String getVersionString() {
+		Properties prop = new Properties();
+		InputStream in = DSTool.class.getResourceAsStream("version.properties");
+		try {
+			prop.load(in);
+			in.close();
+		} catch (IOException e) {
+			return "Could not read version.properties";
+		}
+		return prop.getProperty("version");
+	}
 
 	static Options commandLineOptions() {
 
@@ -87,6 +101,11 @@ public class DSTool {
 
 	static void printHelp(Options options, OutputStream out) {
 		PrintWriter writer = new PrintWriter(out);
+		writer.println(
+				String.format("%s version %s, Copyright Jonas Andreasson under the MIT license.",
+				TOOLNAME, getVersionString()));
+		writer.println();
+		writer.flush();
 		HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp(CMDLINE_SYNTAX, options, true);
 		writer.flush();
@@ -156,11 +175,13 @@ public class DSTool {
 		OutputStream out = null;
 		InputStream in = null;
 		if (line.hasOption("f")) {
-			if ( line.hasOption("d")) {
-				printErrorMessage("Option -f is invalid for a -d delete operation", System.err);
+			if (line.hasOption("d")) {
+				printErrorMessage(
+						"Option -f is invalid for a -d delete operation",
+						System.err);
 				System.exit(-1);
 			}
-			
+
 			file = new File(line.getOptionValue("f"));
 		}
 
@@ -206,9 +227,9 @@ public class DSTool {
 				}
 			});
 
-			if ( in != null)
+			if (in != null)
 				in.close();
-			if ( out != null)
+			if (out != null)
 				out.close();
 
 			System.exit(result ? 0 : -1);
