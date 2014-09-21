@@ -1,4 +1,4 @@
-package com.momab;
+package com.momab.dstool;
 
 import java.io.File;
 import java.io.FileInputStream;
