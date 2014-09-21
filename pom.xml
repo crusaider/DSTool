@@ -4,7 +4,7 @@
 
 	<groupId>com.momab.dstool</groupId>
 	<artifactId>DSTool</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<packaging>jar</packaging>
 
 	<name>DSTool</name>
