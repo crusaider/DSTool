@@ -11,71 +11,70 @@ import com.google.appengine.api.datastore.Entity;
 
 /**
  * @author Jonas Andreasson
- * 
+ *
  * This code is copyrighted under the MIT license. Please see LICENSE.TXT.
  *
  */
 class DSUploadOperationImpl extends AbstractDSOperationImpl implements
-		DSOperation {
+        DSOperation {
 
-	private final InputStream in;
+    private final InputStream in;
 
-	DSUploadOperationImpl(String host, InputStream in,
-			int port, String username, String password) {
-		super(host, port, username, password);
-		this.in = in;
-	}
+    DSUploadOperationImpl(String host, InputStream in,
+            int port, String username, String password) {
+        super(host, port, username, password);
+        this.in = in;
+    }
 
-	@Override
-	public boolean Run(final ProgressCallback callback) throws IOException, ClassNotFoundException {
+    @Override
+    public boolean Run(final ProgressCallback callback) throws IOException, ClassNotFoundException {
 
-		sendProgressMessage(callback, "Installing ");
+        CallbackWrapper wrappedCallback = new CallbackWrapper(callback);
 
-		super.Install();
+        wrappedCallback.onInstall();
 
-		ObjectInputStream objectStream; 
-		int entityCount = 0;
-		
-		try {
+        super.Install();
 
-			// Get the Datastore Service
-			DatastoreService datastore = DatastoreServiceFactory
-					.getDatastoreService();
+        ObjectInputStream objectStream;
+        int entityCount = 0;
 
-			objectStream = new ObjectInputStream(this.in);
+        try {
 
-			
+            // Get the Datastore Service
+            DatastoreService datastore = DatastoreServiceFactory
+                    .getDatastoreService();
 
-			Object entity;
+            objectStream = new ObjectInputStream(this.in);
 
-			while (true) {
+            wrappedCallback.onBegin();
 
-				try {
-					entity = objectStream.readObject();
-				} catch (EOFException e) {
-					break;
-				}
+            Object entity;
 
-				if (!(entity instanceof Entity)) {
-					throw new InvalidClassException(
-							"Could not find Entity object in input stream");
-				}
-	
-				datastore.put((Entity) entity);
-				
-				entityCount++;
-				sendProgressMessage(callback, ".");
-			}
+            while (true) {
 
-			sendProgressMessage(callback,
-					String.format(" %d entities uploaded ", entityCount));
+                try {
+                    entity = objectStream.readObject();
+                } catch (EOFException e) {
+                    break;
+                }
 
-			return true;
+                if (!(entity instanceof Entity)) {
+                    throw new InvalidClassException(
+                            "Could not find Entity object in input stream");
+                }
 
-		} finally {
-			super.UnInstall();
-			sendProgressMessage(callback, "Done!");
-		}
+                datastore.put((Entity) entity);
 
-	}
+                entityCount++;
+                wrappedCallback.onEntityCompleted();
+            }
+
+            return true;
+
+        } finally {
+            super.UnInstall();
+            wrappedCallback.onDone(entityCount);
+        }
+
+    }
 }

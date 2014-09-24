@@ -14,7 +14,10 @@ public interface DSOperation {
 
     interface ProgressCallback {
 
-        void Tick(String message);
+        void onInstall();
+        void onBegin();
+        void onEntityCompleted();
+        void onDone(Integer count);
     }
 
 }
