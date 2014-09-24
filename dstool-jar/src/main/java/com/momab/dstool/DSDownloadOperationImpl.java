@@ -32,11 +32,13 @@ class DSDownloadOperationImpl extends AbstractDSOperationImpl implements
 	@Override
 	public boolean Run(ProgressCallback callback) throws IOException {
 		
-		sendProgressMessage(callback, "Installing ");
+                CallbackWrapper wrappedCallback = new CallbackWrapper(callback);
+            
+		wrappedCallback.onInstall();
 		
 		super.Install();
 		
-		sendProgressMessage(callback, "Preparing query ");
+		wrappedCallback.onBegin();
 
 		
 		// Get the Datastore Service
@@ -55,14 +57,12 @@ class DSDownloadOperationImpl extends AbstractDSOperationImpl implements
 		for (Entity e : pq.asIterable()) {
 			objectStream.writeObject(e);
 			entityCount++;
-			sendProgressMessage(callback, ".");
-		}
-		
-		sendProgressMessage(callback, String.format(" %d entities downloaded ", entityCount));
+			 wrappedCallback.onEntityCompleted();
+		}	
 		
 		super.UnInstall();
 
-		sendProgressMessage(callback, "Done!");
+		wrappedCallback.onDone(entityCount);
 
 		return true;
 	}

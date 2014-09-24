@@ -9,55 +9,53 @@ import com.google.appengine.api.datastore.Query;
 
 /**
  * @author Jonas Andreasson
- * 
+ *
  * This code is copyrighted under the MIT license. Please see LICENSE.TXT.
  *
  */
 class DSDeleteOperationImpl extends AbstractDSOperationImpl implements
-		DSOperation {
+        DSOperation {
 
-	private final String entityKind;
-	
-	DSDeleteOperationImpl(String host, String entityKind,
-			int port, String username,
-			String password)  {
-		super(host, port, username, password);
-		this.entityKind = entityKind;
-	}
+    private final String entityKind;
 
-	@Override
-	public boolean Run(ProgressCallback callback) throws IOException {
-		
-		sendProgressMessage(callback, "Installing ");
-		
-		super.Install();
-		
-		sendProgressMessage(callback, "Preparing query ");
+    DSDeleteOperationImpl(String host, String entityKind,
+            int port, String username,
+            String password) {
+        super(host, port, username, password);
+        this.entityKind = entityKind;
+    }
 
-		
-		// Get the Datastore Service
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    @Override
+    public boolean Run(ProgressCallback callback) throws IOException {
 
-		// Use class Query to assemble a query
-		Query q = new Query(this.entityKind).setKeysOnly();
+        CallbackWrapper wrappedCallback = new CallbackWrapper(callback);
 
-		// Use PreparedQuery interface to retrieve results
-		PreparedQuery pq = datastore.prepare(q);
+        wrappedCallback.onInstall();
+        super.Install();
 
-		int entityCount = 0;
-		
-		for (Entity e : pq.asIterable()) {
-			datastore.delete(e.getKey());
-			entityCount++;
-			sendProgressMessage(callback, ".");
-		}
-		
-		sendProgressMessage(callback, String.format(" %d entities deleted ", entityCount));
-		
-		super.UnInstall();
+        wrappedCallback.onBegin();
 
-		sendProgressMessage(callback, "Done!");
+        // Get the Datastore Service
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-		return true;
-	}
+        // Use class Query to assemble a query
+        Query q = new Query(this.entityKind).setKeysOnly();
+
+        // Use PreparedQuery interface to retrieve results
+        PreparedQuery pq = datastore.prepare(q);
+
+        int entityCount = 0;
+
+        for (Entity e : pq.asIterable()) {
+            datastore.delete(e.getKey());
+            entityCount++;
+            wrappedCallback.onEntityCompleted();
+        }
+
+        super.UnInstall();
+
+        wrappedCallback.onDone(entityCount);
+
+        return true;
+    }
 }

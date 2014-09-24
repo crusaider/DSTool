@@ -18,11 +18,6 @@ import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import com.momab.dstool.DSOperation;
-import com.momab.dstool.DSOperation;
-import com.momab.dstool.DSOperationBuilder;
-import com.momab.dstool.DSOperationBuilder;
-
 /**
  * @author Jonas Andreasson
  * 
@@ -221,12 +216,7 @@ public class DSTool {
 		}
 
 		if (file != null || line.hasOption("d")) {
-			boolean result = op.Run(new DSOperation.ProgressCallback() {
-
-				@Override
-				public void Tick(String message) {
-					System.out.print(message);
-				}
+			boolean result = op.Run(new ProgressPrinter() {
 			});
 
 			if (in != null)
