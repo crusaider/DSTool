@@ -1,0 +1,9 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}
+${licensePrefix}This code is copyrighted under the MIT license. Please see LICENSE.TXT.
+${licensePrefix}
+<#if licenseLast??>
+${licenseLast}
+</#if>
