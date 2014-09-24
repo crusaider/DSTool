@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.momab.dstool</groupId>
+    <artifactId>dstool</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>DSTool</name>
+    <modules>
+        <module>dstool-cli</module>
+        <module>dstool-jar</module>
+    </modules>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+   <organization>
+        <name>Morik Online Management AB</name>
+        <url>http://momab.se</url>
+    </organization>
+    <description>A set of java classes that can be used as is or from a command line to download, upload and delete Google Appengine Datastore entities trough the remote API.
+
+        Using the GAE Data Store Remote API this tool is able to:
+
+        Download all entities of a kind from a remote app engine application and either store it in local file our write it to stdout.
+        Upload entities stored in a local file or read them fom stdin to a remote app engine application.
+        Delete all entities of a kind from a remote app engine application.</description>
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/crusaider/DSTool/issues</url>
+    </issueManagement>
+    <inceptionYear>2014</inceptionYear>
+</project>
