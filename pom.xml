@@ -6,6 +6,9 @@
     <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>DSTool</name>
+    <prerequisites>
+        <maven>3.1</maven>
+    </prerequisites>
     <modules>
         <module>dstool-cli</module>
         <module>dstool-jar</module>
