@@ -37,7 +37,7 @@
             <plugin>
                 <groupId>com.atlassian.maven.plugins</groupId>
                 <artifactId>maven-jgitflow-plugin</artifactId>
-                <version>1.0-alpha20</version>
+                <version>1.0-alpha27</version>
                 <configuration>
                     <!-- Enable this to push to origin using SSH keys -->
                     <enableSshAgent>true</enableSshAgent>
@@ -47,17 +47,17 @@
                       Pusing in-development features to origin allows all devs to see what each other
                       are working on
                     -->
-                    <pushFeatures>false</pushFeatures>
+                    <pushFeatures>true</pushFeatures>
                     <!--
                       This allows the CI server (e.g. Jenkins) to automatically push new releases to
                       origin; you can then either manually deploy them or, if you are doing Continuous
                       Deployments, auto-deploy them to prod
                     -->
-                    <pushReleases>false</pushReleases>
+                    <pushReleases>true</pushReleases>
                     <!--
                       Hot Fixes should be pushed to origin as well so that any dev can pick them up
                     -->
-                    <pushHotfixes>false</pushHotfixes>
+                    <pushHotfixes>true</pushHotfixes>
                     <!--
                       Prevents deployments from dev workstations so that they can be done by a CI
                       server
