@@ -20,10 +20,9 @@ class DSUploadOperationImpl extends AbstractDSOperationImpl implements
 
     private final InputStream in;
 
-    DSUploadOperationImpl(String host, InputStream in,
-            int port, String username, String password) {
-        super(host, port, username, password);
-        this.in = in;
+    DSUploadOperationImpl(Endpoint endpoint, InputStream inputStream) {
+        super(endpoint);
+        this.in = inputStream;
     }
 
     @Override

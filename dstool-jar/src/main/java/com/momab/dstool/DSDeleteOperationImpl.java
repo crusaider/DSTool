@@ -18,10 +18,8 @@ class DSDeleteOperationImpl extends AbstractDSOperationImpl implements
 
     private final String entityKind;
 
-    DSDeleteOperationImpl(String host, String entityKind,
-            int port, String username,
-            String password) {
-        super(host, port, username, password);
+    DSDeleteOperationImpl(Endpoint endpoint, String entityKind) {
+        super(endpoint);
         this.entityKind = entityKind;
     }
 

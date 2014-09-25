@@ -144,11 +144,8 @@ public class DSTool {
 			System.exit(-1);
 		}
 
-		DSOperation op = null;
-
-		// Required operands/arguments
-		DSOperationBuilder opBuilder = new DSOperationBuilder(
-				line.getArgs()[0], line.getArgs()[1]);
+		Endpoint.Builder endpointBuilder = new Endpoint.Builder(line.getArgs()[0]);
+                
 
 		// Username and password
 		if (line.hasOption("u") || line.hasOption("p")) {
@@ -157,17 +154,23 @@ public class DSTool {
 				System.exit(-1);
 			}
 
-			opBuilder
-					.asUser(line.getOptionValue("u"), line.getOptionValue("p"));
+                        endpointBuilder = endpointBuilder.asUser(line.getOptionValue("u"),
+                                line.getOptionValue("p"));
 		}
 
 		// Port
 		if (line.hasOption("P")) {
-			opBuilder = opBuilder.usingPort(Integer.valueOf(line
+			endpointBuilder = endpointBuilder.usingPort(Integer.valueOf(line
 					.getOptionValue("P")));
 		}
 
-		// File
+                DSOperation op = null;
+
+		// Required operands/arguments
+		DSOperationBuilder opBuilder = new DSOperationBuilder(
+				endpointBuilder.build(), line.getArgs()[1]);
+
+                // File
 		File file = null;
 		OutputStream out = null;
 		InputStream in = null;

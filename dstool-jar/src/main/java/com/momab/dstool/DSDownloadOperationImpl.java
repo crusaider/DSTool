@@ -11,59 +11,57 @@ import com.google.appengine.api.datastore.Query;
 
 /**
  * @author Jonas Andreasson
- * 
+ *
  * This code is copyrighted under the MIT license. Please see LICENSE.TXT.
  *
  */
 class DSDownloadOperationImpl extends AbstractDSOperationImpl implements
-		DSOperation {
+        DSOperation {
 
-	private final OutputStream out;
-	private final String entityKind;
-	
-	DSDownloadOperationImpl(String host, String entityKind,
-			OutputStream outputStream, int port, String username,
-			String password)  {
-		super(host, port, username, password);
-		this.entityKind = entityKind;
-		this.out = outputStream;
-	}
+    private final OutputStream out;
+    private final String entityKind;
 
-	@Override
-	public boolean Run(ProgressCallback callback) throws IOException {
-		
-                CallbackWrapper wrappedCallback = new CallbackWrapper(callback);
-            
-		wrappedCallback.onInstall();
-		
-		super.Install();
-		
-		wrappedCallback.onBegin();
+    DSDownloadOperationImpl(Endpoint endpoint, String entityKind,
+            OutputStream outputStream) {
+        super(endpoint);
+        this.entityKind = entityKind;
+        this.out = outputStream;
+    }
 
-		
-		// Get the Datastore Service
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    @Override
+    public boolean Run(ProgressCallback callback) throws IOException {
 
-		// Use class Query to assemble a query
-		Query q = new Query(this.entityKind);
+        CallbackWrapper wrappedCallback = new CallbackWrapper(callback);
 
-		// Use PreparedQuery interface to retrieve results
-		PreparedQuery pq = datastore.prepare(q);
-		
-		ObjectOutputStream objectStream = new ObjectOutputStream(this.out);
+        wrappedCallback.onInstall();
 
-		int entityCount = 0;
-		
-		for (Entity e : pq.asIterable()) {
-			objectStream.writeObject(e);
-			entityCount++;
-			 wrappedCallback.onEntityCompleted();
-		}	
-		
-		super.UnInstall();
+        super.Install();
 
-		wrappedCallback.onDone(entityCount);
+        wrappedCallback.onBegin();
 
-		return true;
-	}
+        // Get the Datastore Service
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+        // Use class Query to assemble a query
+        Query q = new Query(this.entityKind);
+
+        // Use PreparedQuery interface to retrieve results
+        PreparedQuery pq = datastore.prepare(q);
+
+        ObjectOutputStream objectStream = new ObjectOutputStream(this.out);
+
+        int entityCount = 0;
+
+        for (Entity e : pq.asIterable()) {
+            objectStream.writeObject(e);
+            entityCount++;
+            wrappedCallback.onEntityCompleted();
+        }
+
+        super.UnInstall();
+
+        wrappedCallback.onDone(entityCount);
+
+        return true;
+    }
 }

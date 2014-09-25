@@ -19,11 +19,8 @@ import com.momab.dstool.DSOperation.ProgressCallback;
  */
 class AbstractDSOperationImpl {
 
-    private final String host;
-    private final int port;
-    private final String username;
-    private final String password;
-
+    private final Endpoint endpoint;
+    
     private RemoteApiInstaller installer;
 
     /**
@@ -35,17 +32,13 @@ class AbstractDSOperationImpl {
      * @param password Password for authentication
      *
      */
-    public AbstractDSOperationImpl(String host, int port, String username,
-            String password) {
-        this.host = host;
-        this.port = port;
-        this.username = username;
-        this.password = password;
+    public AbstractDSOperationImpl(Endpoint endpoint) {
+        this.endpoint = endpoint;
     }
 
     protected void Install() throws IOException {
-        RemoteApiOptions options = new RemoteApiOptions().server(host, port)
-                .credentials(username, password);
+        RemoteApiOptions options = new RemoteApiOptions().server(endpoint.getHost(), endpoint.getPort())
+                .credentials(endpoint.getUsername(), endpoint.getPassword());
 
         installer = new RemoteApiInstaller();
         installer.install(options);
