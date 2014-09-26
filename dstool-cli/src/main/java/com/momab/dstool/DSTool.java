@@ -164,10 +164,10 @@ public class DSTool {
 					.getOptionValue("P")));
 		}
 
-                DSOperation op = null;
+                Operation op = null;
 
 		// Required operands/arguments
-		DSOperationBuilder opBuilder = new DSOperationBuilder(
+		SimplexOperationBuilder opBuilder = new SimplexOperationBuilder(
 				endpointBuilder.build(), line.getArgs()[1]);
 
                 // File

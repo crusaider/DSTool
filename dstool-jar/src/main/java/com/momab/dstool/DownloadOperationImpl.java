@@ -15,13 +15,13 @@ import com.google.appengine.api.datastore.Query;
  * This code is copyrighted under the MIT license. Please see LICENSE.TXT.
  *
  */
-class DSDownloadOperationImpl extends AbstractDSOperationImpl implements
-        DSOperation {
+class DownloadOperationImpl extends AbstractOperationImpl implements
+        Operation {
 
     private final OutputStream out;
     private final String entityKind;
 
-    DSDownloadOperationImpl(Endpoint endpoint, String entityKind,
+    DownloadOperationImpl(Endpoint endpoint, String entityKind,
             OutputStream outputStream) {
         super(endpoint);
         this.entityKind = entityKind;

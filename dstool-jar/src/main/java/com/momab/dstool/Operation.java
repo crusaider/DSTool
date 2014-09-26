@@ -8,7 +8,7 @@ import java.io.IOException;
  * This code is copyrighted under the MIT license. Please see LICENSE.TXT.
  *
  */
-public interface DSOperation {
+public interface Operation {
 
     boolean Run(ProgressCallback callback) throws IOException, ClassNotFoundException;
 

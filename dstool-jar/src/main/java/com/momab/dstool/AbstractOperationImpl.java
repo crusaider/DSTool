@@ -8,7 +8,7 @@ import java.io.IOException;
 import com.google.appengine.tools.remoteapi.RemoteApiInstaller;
 import com.google.appengine.tools.remoteapi.RemoteApiOptions;
 
-import com.momab.dstool.DSOperation.ProgressCallback;
+import com.momab.dstool.Operation.ProgressCallback;
 
 /**
  * Abstract base class for data store operations. Manages installation and
@@ -17,7 +17,7 @@ import com.momab.dstool.DSOperation.ProgressCallback;
  *
  * @author Jonas Andreasson
  */
-class AbstractDSOperationImpl {
+class AbstractOperationImpl {
 
     private final Endpoint endpoint;
     
@@ -32,7 +32,7 @@ class AbstractDSOperationImpl {
      * @param password Password for authentication
      *
      */
-    public AbstractDSOperationImpl(Endpoint endpoint) {
+    public AbstractOperationImpl(Endpoint endpoint) {
         this.endpoint = endpoint;
     }
 

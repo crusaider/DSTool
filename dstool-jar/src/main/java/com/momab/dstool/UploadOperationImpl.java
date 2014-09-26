@@ -15,12 +15,12 @@ import com.google.appengine.api.datastore.Entity;
  * This code is copyrighted under the MIT license. Please see LICENSE.TXT.
  *
  */
-class DSUploadOperationImpl extends AbstractDSOperationImpl implements
-        DSOperation {
+class UploadOperationImpl extends AbstractOperationImpl implements
+        Operation {
 
     private final InputStream in;
 
-    DSUploadOperationImpl(Endpoint endpoint, InputStream inputStream) {
+    UploadOperationImpl(Endpoint endpoint, InputStream inputStream) {
         super(endpoint);
         this.in = inputStream;
     }

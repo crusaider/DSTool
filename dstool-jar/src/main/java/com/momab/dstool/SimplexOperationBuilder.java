@@ -9,45 +9,45 @@ import java.io.OutputStream;
  * This code is copyrighted under the MIT license. Please see LICENSE.TXT.
  *
  */
-public class DSOperationBuilder {
+public class SimplexOperationBuilder {
 
     private Endpoint endpoint;
     private String entityKind;
     private OutputStream outputStream = null;
     private InputStream inStream = null;
 
-    public DSOperationBuilder(Endpoint endpoint, String entityKind) {
+    public SimplexOperationBuilder(Endpoint endpoint, String entityKind) {
         this.endpoint = endpoint;
         this.entityKind = entityKind;
     }
 
-    public DSOperationBuilder writeTo(OutputStream stream) {
+    public SimplexOperationBuilder writeTo(OutputStream stream) {
         this.outputStream = stream;
         return this;
     }
 
-    public DSOperationBuilder readFrom(InputStream stream) {
+    public SimplexOperationBuilder readFrom(InputStream stream) {
         this.inStream = stream;
         return this;
     }
 
-    public DSOperation buildDownload() {
+    public Operation buildDownload() {
         if (outputStream == null) {
             throw new IllegalArgumentException("No output stream supplied");
         }
 
-        return new DSDownloadOperationImpl(endpoint, entityKind, outputStream );
+        return new DownloadOperationImpl(endpoint, entityKind, outputStream );
 	}
 
-	public DSOperation buildUpload() {
+	public Operation buildUpload() {
         if (inStream == null) {
             throw new IllegalArgumentException("No input stream supplied");
         }
 
-        return new DSUploadOperationImpl(endpoint, inStream);
+        return new UploadOperationImpl(endpoint, inStream);
     }
 
-    public DSOperation buildDelete() {
-        return new DSDeleteOperationImpl(endpoint, entityKind);
+    public Operation buildDelete() {
+        return new DeleteOperationImpl(endpoint, entityKind);
     }
 }

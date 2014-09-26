@@ -7,7 +7,7 @@ package com.momab.dstool;
  *         LICENSE.TXT.
  * 
  */
-class ProgressPrinter implements DSOperation.ProgressCallback{
+class ProgressPrinter implements Operation.ProgressCallback{
 
     @Override
     public void onInstall() {

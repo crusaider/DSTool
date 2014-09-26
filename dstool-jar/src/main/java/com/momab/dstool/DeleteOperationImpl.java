@@ -13,12 +13,12 @@ import com.google.appengine.api.datastore.Query;
  * This code is copyrighted under the MIT license. Please see LICENSE.TXT.
  *
  */
-class DSDeleteOperationImpl extends AbstractDSOperationImpl implements
-        DSOperation {
+class DeleteOperationImpl extends AbstractOperationImpl implements
+        Operation {
 
     private final String entityKind;
 
-    DSDeleteOperationImpl(Endpoint endpoint, String entityKind) {
+    DeleteOperationImpl(Endpoint endpoint, String entityKind) {
         super(endpoint);
         this.entityKind = entityKind;
     }
